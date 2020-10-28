@@ -7,11 +7,13 @@ const Board = (props) => {
   let pathsMoved = 0;
   let weaponsDestroyed = 0;
 
+  {/* Function to remove weapon from the board */}
   const destroyWeapon = (weaponPosition) => {
     const weaponElement = document.getElementById(weaponPosition);
     weaponElement.innerHTML = "";
     weaponsDestroyed = weaponsDestroyed + 1;
   }
+  {/* Function to check if position has a weapon */}
   const hasWeapon = (weaponPosition) => {
     const nextElement = document.getElementById(weaponPosition);
     if(nextElement.innerHTML !== "") {
@@ -19,10 +21,12 @@ const Board = (props) => {
     }
     return false;
   }
+  {/* Function to mark path player moved on the board */}
   const markPath = (position) => {
     const cPosition = document.getElementById(position);
     cPosition.style.backgroundColor = 'green';
   }
+  {/* Function to check if position has been passed by player */}
   const isPathMoved = (position) => {
     const cPosition = document.getElementById(position);
     if(cPosition.style.backgroundColor === 'green') {
@@ -30,6 +34,7 @@ const Board = (props) => {
     }
     return false;
   }
+  {/* Function to check if position is a valid point on board */}
   const isNotValidPath = (position) => {
     const cPosition = document.getElementById(position);
     if(cPosition === null) {
@@ -37,27 +42,30 @@ const Board = (props) => {
     }
     return false;
   }
+  {/* Function to move player on the board */}
   const movePlayer = (playerPosition) => {
     const actor = document.getElementById(playerPosition);
     actor.innerHTML = "";
     pathsMoved = pathsMoved + 1;
   }
+  {/* Function to move player to new position on the board */}
   const setPlayerNewPosition = (playerPosition) => {
     const actor = document.getElementById(playerPosition);
     return actor.innerHTML = `<img src=${player} alt="sprite-player" />`;
   }
 
-  const nextPath = (path, obj) => {
-    if(isNotValidPath(path) || isPathMoved(path)) {
+  {/* Function to determine players next move */}
+  const nextPath = (pathAsString, pathAsObject) => {
+    if(isNotValidPath(pathAsString) || isPathMoved(pathAsString)) {
       return false;
     } else {
-      if(hasWeapon(path)) {
-        destroyWeapon(path);
-        setPlayerNewPosition(path);
-        return obj;
+      if(hasWeapon(pathAsString)) {
+        destroyWeapon(pathAsString);
+        setPlayerNewPosition(pathAsString);
+        return pathAsObject;
       } else {
-        setPlayerNewPosition(path);
-        return obj;
+        setPlayerNewPosition(pathAsString);
+        return pathAsObject;
       }
     }
   }
@@ -96,6 +104,7 @@ const Board = (props) => {
   }
 
   useEffect(() => {
+    // Converts position to an object
     const playerPosition = JSON.parse(`{"x":"${gridMiddle}", "y":"${gridMiddle}"}`);
     play(playerPosition);
   }, [])

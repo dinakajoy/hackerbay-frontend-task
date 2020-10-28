@@ -9,6 +9,7 @@ function App() {
         <p>The Name Of This Game Is <em>'Save The Princess'</em></p>
       </header>
       <main className="app-main">
+        {/* Component to get the size of board from user */}
         <GetBoardWidth />
       </main>
       <footer className="app-footer">

@@ -12,11 +12,10 @@ const GetBoardWidth = () => {
 
   return (
     <>
+      {/* Modal to get the size of board from user */}
       {!isBoardShown && <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#boardSizeModal">
         Start Game
       </button>}
-
-      {isBoardShown && <Board boardSize={boardSize} />}
 
       <div className="modal fade" id="boardSizeModal" tabIndex="-1" aria-labelledby="boardSizeModalLabel" aria-hidden="true">
         <div className="modal-dialog">
@@ -42,6 +41,9 @@ const GetBoardWidth = () => {
           </div>
         </div>
       </div>
+
+      {/* Component to render board */}
+      {isBoardShown && <Board boardSize={boardSize} />}
     </>
   );
 }
