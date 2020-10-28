@@ -90,16 +90,16 @@ const Board = (props) => {
             alert('You Lost, Sorry, you do not have what it takes to save the princess!!!');
             window.location.reload();
           } else {
-            setTimeout(function(){ return play(moveRight); }, 1000);
+            setTimeout(function(){ return play(moveRight); }, 500);
           }
         } else {
-          setTimeout(function(){ return play(moveDown); }, 1000);
+          setTimeout(function(){ return play(moveDown); }, 500);
         }
       } else {
-        setTimeout(function(){ return play(moveLeft); }, 1000);
+        setTimeout(function(){ return play(moveLeft); }, 500);
       }
     } else {
-      setTimeout(function(){ return play(moveUp); }, 1000);
+      setTimeout(function(){ return play(moveUp); }, 500);
     }
   }
 
