@@ -78,16 +78,16 @@ const Board = (props) => {
     }
 
     e = e || window.event;
-    if (e.keyCode === 38) {
+    if (e.keyCode === 38 || e.keyCode === 50) {
       nextPath(`x:${+currentPosition.x - 1}, y:${currentPosition.y}`, {x:+currentPosition.x - 1, y:+currentPosition.y}, `x:${currentPosition.x}, y:${+currentPosition.y}`);
     }
-    else if (e.keyCode === 40) {
+    else if (e.keyCode === 40 || e.keyCode === 56) {
       nextPath(`x:${+currentPosition.x + 1}, y:${currentPosition.y}`, {x:+currentPosition.x + 1, y:+currentPosition.y}, `x:${currentPosition.x}, y:${+currentPosition.y}`);
     }
-    else if (e.keyCode === 37) {
+    else if (e.keyCode === 37 || e.keyCode === 52) {
       nextPath(`x:${currentPosition.x}, y:${+currentPosition.y - 1}`, {x:+currentPosition.x, y:+currentPosition.y - 1}, `x:${currentPosition.x}, y:${+currentPosition.y}`);
     }
-    else if (e.keyCode === 39) {
+    else if (e.keyCode === 39 || e.keyCode === 54) {
       nextPath(`x:${currentPosition.x}, y:${+currentPosition.y + 1}`, {x:+currentPosition.x, y:+currentPosition.y + 1}, `x:${currentPosition.x}, y:${+currentPosition.y}`);
     } else {
       return;
@@ -128,7 +128,7 @@ const Board = (props) => {
 
   return (
     <>
-      <input type="text" id="custId" name="custId" value="3487" style={{height:'0'}} />
+      <input type="text" id="custId" name="custId" value="" style={{height:0,border:0,outline:0}} />
       <div style={{display:'grid', gridTemplateColumns:`repeat(${boardWidth}, 25px)`}}>
         {grid}
       </div>
