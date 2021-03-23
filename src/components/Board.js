@@ -78,16 +78,17 @@ const Board = (props) => {
     }
 
     e = e || window.event;
-    if (e.keyCode === 38 || e.keyCode === 50) {
+    console.log(e.which);
+    if (e.keyCode === 38 || e.which === 50) {
       nextPath(`x:${+currentPosition.x - 1}, y:${currentPosition.y}`, {x:+currentPosition.x - 1, y:+currentPosition.y}, `x:${currentPosition.x}, y:${+currentPosition.y}`);
     }
-    else if (e.keyCode === 40 || e.keyCode === 56) {
+    else if (e.keyCode === 40 || e.which === 56) {
       nextPath(`x:${+currentPosition.x + 1}, y:${currentPosition.y}`, {x:+currentPosition.x + 1, y:+currentPosition.y}, `x:${currentPosition.x}, y:${+currentPosition.y}`);
     }
-    else if (e.keyCode === 37 || e.keyCode === 52) {
+    else if (e.keyCode === 37 || e.which === 52) {
       nextPath(`x:${currentPosition.x}, y:${+currentPosition.y - 1}`, {x:+currentPosition.x, y:+currentPosition.y - 1}, `x:${currentPosition.x}, y:${+currentPosition.y}`);
     }
-    else if (e.keyCode === 39 || e.keyCode === 54) {
+    else if (e.keyCode === 39 || e.which === 54) {
       nextPath(`x:${currentPosition.x}, y:${+currentPosition.y + 1}`, {x:+currentPosition.x, y:+currentPosition.y + 1}, `x:${currentPosition.x}, y:${+currentPosition.y}`);
     } else {
       return;
