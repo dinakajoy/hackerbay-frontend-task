@@ -4,6 +4,14 @@ import princess from '../assets/images/princess.png';
 import weapon from '../assets/images/weapon.png';
 
 const Board = (props) => {
+  let val = 1;
+  // console.log(mob);
+  const handleMob = (e) => {
+    val = +e.target.value;
+    play(e);
+    e.target.value = '';
+  }
+
   const boardWidth = +props.boardSize;
   let pathsMoved = 0;
   let weaponsDestroyed = 0;
@@ -78,17 +86,16 @@ const Board = (props) => {
     }
 
     e = e || window.event;
-    console.log(e.which);
-    if (e.keyCode === 38 || e.which === 50) {
+    if (e.keyCode === 38 || val === 2) {
       nextPath(`x:${+currentPosition.x - 1}, y:${currentPosition.y}`, {x:+currentPosition.x - 1, y:+currentPosition.y}, `x:${currentPosition.x}, y:${+currentPosition.y}`);
     }
-    else if (e.keyCode === 40 || e.which === 56) {
+    else if (e.keyCode === 40 || val === 8) {
       nextPath(`x:${+currentPosition.x + 1}, y:${currentPosition.y}`, {x:+currentPosition.x + 1, y:+currentPosition.y}, `x:${currentPosition.x}, y:${+currentPosition.y}`);
     }
-    else if (e.keyCode === 37 || e.which === 52) {
+    else if (e.keyCode === 37 || val === 4) {
       nextPath(`x:${currentPosition.x}, y:${+currentPosition.y - 1}`, {x:+currentPosition.x, y:+currentPosition.y - 1}, `x:${currentPosition.x}, y:${+currentPosition.y}`);
     }
-    else if (e.keyCode === 39 || e.which === 54) {
+    else if (e.keyCode === 39 || val === 6) {
       nextPath(`x:${currentPosition.x}, y:${+currentPosition.y + 1}`, {x:+currentPosition.x, y:+currentPosition.y + 1}, `x:${currentPosition.x}, y:${+currentPosition.y}`);
     } else {
       return;
@@ -97,8 +104,15 @@ const Board = (props) => {
   }
 
   useEffect(() => {
-    document.onkeydown = (e => play(e));
-    document.getElementById('custId').focus();
+    if(window.screen.width < 500 ||
+      navigator.userAgent.match(/Android/i) ||
+      navigator.userAgent.match(/webOS/i) ||
+      navigator.userAgent.match(/iPhone/i) ||
+      navigator.userAgent.match(/iPod/i)) {
+        document.getElementById('custId').focus();
+      } else {
+        document.onkeydown = (e => play(e));
+      }
   }, []);
 
   const boardSize = boardWidth * 2;
@@ -129,7 +143,7 @@ const Board = (props) => {
 
   return (
     <>
-      <input type="text" id="custId" name="custId" value="" style={{height:0,border:0,outline:0}} />
+      <input type="text" id="custId" name="custId" onChange={handleMob} style={{height:0,border:0,outline:0}} />
       <div style={{display:'grid', gridTemplateColumns:`repeat(${boardWidth}, 25px)`}}>
         {grid}
       </div>
