@@ -4,18 +4,27 @@ import Board from './Board';
 const GetBoardWidth = () => {
   const [boardSize, setBoardSize] = useState(0);
   const [isBoardShown, setIsBoardShown] = useState(false);
+  const [error, setError] = useState('');
 
   const setBoard = (e) => {
     e.preventDefault();
-    setIsBoardShown(true);
+    if(boardSize < 10 || boardSize > 30) {
+      setError('Please enter size between 10 and 30');
+      setIsBoardShown(false);
+    } else {
+      setError('');
+      setIsBoardShown(true);
+    }
   }
-
+  
   return (
     <>
       {/* Modal to get the size of board from user */}
       {!isBoardShown && <button type="button" className="btn btn-primary" data-toggle="modal" data-target="#boardSizeModal">
         Start Game
       </button>}
+
+      {error && <div className="m-3 alert alert-danger" role="alert">{error}</div>}
 
       <div className="modal fade" id="boardSizeModal" tabIndex="-1" aria-labelledby="boardSizeModalLabel" aria-hidden="true">
         <div className="modal-dialog">
@@ -30,7 +39,7 @@ const GetBoardWidth = () => {
               <form>
                 <div className="form-group">
                   <label htmlFor="sizeOfBoard">Please Enter Board Size!</label>
-                  <input type="number" className="form-control" id="sizeOfBoard" aria-describedby="sizeOfBoard" value={boardSize} onChange={e => setBoardSize(e.target.value)} />
+                  <input type="number" className="form-control" id="sizeOfBoard" aria-describedby="sizeOfBoard" value={boardSize} min="10" max="30" onChange={e => setBoardSize(e.target.value)} />
                 </div>
               </form>
             </div>

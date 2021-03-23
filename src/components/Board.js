@@ -1,140 +1,134 @@
 import { useEffect } from 'react';
-import player from '../assets/images/sprite.PNG';
-import weapon from '../assets/images/sprite2.jpg';
+import player from '../assets/images/ninja.png';
+import princess from '../assets/images/princess.png';
+import weapon from '../assets/images/weapon.png';
 
 const Board = (props) => {
   const boardWidth = +props.boardSize;
   let pathsMoved = 0;
   let weaponsDestroyed = 0;
 
-  {/* Function to remove weapon from the board */}
+  // Function to remove weapon from the board 
   const destroyWeapon = (weaponPosition) => {
     const weaponElement = document.getElementById(weaponPosition);
     weaponElement.innerHTML = "";
     weaponsDestroyed = weaponsDestroyed + 1;
-  }
-  {/* Function to check if position has a weapon */}
-  const hasWeapon = (weaponPosition) => {
-    const nextElement = document.getElementById(weaponPosition);
+  };
+
+  // Function to check if position has a weapon
+  const hasWeapon = (nextPosition) => {
+    const nextElement = document.getElementById(nextPosition);
     if(nextElement.innerHTML !== "") {
       return true;
     }
     return false;
-  }
-  {/* Function to mark path player moved on the board */}
-  const markPath = (position) => {
-    const cPosition = document.getElementById(position);
-    cPosition.style.backgroundColor = 'green';
-  }
-  {/* Function to check if position has been passed by player */}
-  const isPathMoved = (position) => {
-    const cPosition = document.getElementById(position);
-    if(cPosition.style.backgroundColor === 'green') {
-      return true;
-    }
-    return false;
-  }
-  {/* Function to check if position is a valid point on board */}
-  const isNotValidPath = (position) => {
+  };
+
+  // Function to check if position is a valid point on board
+  const validPath = (position) => {
     const cPosition = document.getElementById(position);
     if(cPosition === null) {
-      return true;
+      return false;
     }
-    return false;
-  }
-  {/* Function to move player on the board */}
+    return true;
+  };
+
+  // Function to move player on the board
   const movePlayer = (playerPosition) => {
     const actor = document.getElementById(playerPosition);
     actor.innerHTML = "";
-    pathsMoved = pathsMoved + 1;
-  }
-  {/* Function to move player to new position on the board */}
+    pathsMoved = pathsMoved + 1; 
+  };
+
+  // Function to move player to new position on the board
   const setPlayerNewPosition = (playerPosition) => {
     const actor = document.getElementById(playerPosition);
-    return actor.innerHTML = `<img src=${player} alt="sprite-player" />`;
-  }
+    return actor.innerHTML = `<img src=${player} alt="sprite-player" width='19px' height='19px' />`;
+  };
 
-  {/* Function to determine players next move */}
-  const nextPath = (pathAsString, pathAsObject) => {
-    if(isNotValidPath(pathAsString) || isPathMoved(pathAsString)) {
-      return false;
+  // Function to make princess visible for rescue
+  const showPrincessPosition = () => {
+    const princessPosition = document.getElementById(initialPosition);
+    return princessPosition.innerHTML = `<img src=${princess} alt="sprite-player" width='19px' height='19px' />`;
+  };
+
+  // Function to determine players next move
+  const nextPath = (nextPosition, nextPositionAsObject, currentPlayerPosition) => {
+    if(!validPath(nextPosition) ) {
+      return;
     } else {
-      if(hasWeapon(pathAsString)) {
-        destroyWeapon(pathAsString);
-        setPlayerNewPosition(pathAsString);
-        return pathAsObject;
+      if(hasWeapon(nextPosition)) {
+        movePlayer(currentPlayerPosition);
+        destroyWeapon(nextPosition);
+        setPlayerNewPosition(nextPosition);
+        currentPosition = nextPositionAsObject;
       } else {
-        setPlayerNewPosition(pathAsString);
-        return pathAsObject;
+        movePlayer(currentPlayerPosition);
+        setPlayerNewPosition(nextPosition);
+        currentPosition = nextPositionAsObject;
       }
     }
-  }
+  };
 
-  const play = (playerPosition) => {
-    movePlayer(`x:${playerPosition.x}, y:${playerPosition.y}`);
-    markPath(`x:${playerPosition.x}, y:${playerPosition.y}`);
-
+  const play = (e) => {
+    console.log(weaponsDestroyed);
     if(weaponsDestroyed === boardWidth) {
-      alert(`Well Played! You moved ${pathsMoved} steps before saving the princess`);
+      showPrincessPosition();
+      alert(`Congratulations! You defeated ${weaponsDestroyed} warriors to save the princess`); 
       window.location.reload();
     }
 
-    let moveUp = nextPath(`x:${playerPosition.x}, y:${+playerPosition.y + 1}`, {x:playerPosition.x, y:+playerPosition.y + 1});
-    if(!moveUp) {
-      let moveLeft = nextPath(`x:${+playerPosition.x - 1}, y:${playerPosition.y}`, {x:+playerPosition.x - 1, y:playerPosition.y});
-      if(!moveLeft) {
-        let moveDown = nextPath(`x:${playerPosition.x}, y:${+playerPosition.y - 1}`, {x:playerPosition.x, y:+playerPosition.y - 1});
-        if(!moveDown) {
-          let moveRight = nextPath(`x:${+playerPosition.x + 1}, y:${playerPosition.y}`, {x:+playerPosition.x + 1, y:playerPosition.y});
-          if(!moveRight) {
-            alert('You Lost, Sorry, you do not have what it takes to save the princess!!!');
-            window.location.reload();
-          } else {
-            setTimeout(function(){ return play(moveRight); }, 500);
-          }
-        } else {
-          setTimeout(function(){ return play(moveDown); }, 500);
-        }
-      } else {
-        setTimeout(function(){ return play(moveLeft); }, 500);
-      }
-    } else {
-      setTimeout(function(){ return play(moveUp); }, 500);
+    e = e || window.event;
+    if (e.keyCode === 38) {
+      nextPath(`x:${+currentPosition.x - 1}, y:${currentPosition.y}`, {x:+currentPosition.x - 1, y:+currentPosition.y}, `x:${currentPosition.x}, y:${+currentPosition.y}`);
     }
+    else if (e.keyCode === 40) {
+      nextPath(`x:${+currentPosition.x + 1}, y:${currentPosition.y}`, {x:+currentPosition.x + 1, y:+currentPosition.y}, `x:${currentPosition.x}, y:${+currentPosition.y}`);
+    }
+    else if (e.keyCode === 37) {
+      nextPath(`x:${currentPosition.x}, y:${+currentPosition.y - 1}`, {x:+currentPosition.x, y:+currentPosition.y - 1}, `x:${currentPosition.x}, y:${+currentPosition.y}`);
+    }
+    else if (e.keyCode === 39) {
+      nextPath(`x:${currentPosition.x}, y:${+currentPosition.y + 1}`, {x:+currentPosition.x, y:+currentPosition.y + 1}, `x:${currentPosition.x}, y:${+currentPosition.y}`);
+    } else {
+      return;
+    }
+    
   }
 
   useEffect(() => {
-    // Converts position to an object
-    const playerPosition = JSON.parse(`{"x":"${gridMiddle}", "y":"${gridMiddle}"}`);
-    play(playerPosition);
-  }, [])
+    document.onkeydown = (e => play(e));
+    // play(currentPosition);
+  }, []);
 
   const boardSize = boardWidth * 2;
   let numOfWeapons = 0;
   const gridMiddle = Math.floor(boardWidth / 2);
   const grid = [];
+  let initialPosition = `x:${gridMiddle}, y:${gridMiddle}`;
+  let currentPosition = JSON.parse(`{"x": ${gridMiddle}, "y": ${gridMiddle}}`);
 
   for (let row = 0; row < boardWidth; row++) {
     grid.push([]);
     for (let column = 0; column < boardWidth; column++) {
       if(row === gridMiddle && column === gridMiddle) {
         // Check if middle of board an add player
-        grid[row].push(<div key={`x:${row}, y:${column}`} id={`x:${row}, y:${column}`} style={{width:'20px',height:'20px',border:'1px solid #333',textAlign:'center'}}><img src={player} alt="sprite-player" /></div>);
+        grid[row].push(<div key={`x:${row}, y:${column}`} id={`x:${row}, y:${column}`} style={{width:'25px',height:'25px',border:'1px solid #333',textAlign:'center'}}><img src={player} alt="sprite-player" width='19px' height='19px' /></div>);
 
-      } else if (numOfWeapons !== boardWidth && ((Math.floor(Math.random() * (1 - boardSize)) + boardSize) % gridMiddle === 0)) {
+      } else if (numOfWeapons !== boardWidth && ((Math.floor(Math.random() * (1 - boardSize)) + boardSize) % gridMiddle === boardWidth % 5)) {
         // Check condition and randomly set weapons based on board width entered
-        grid[row].push(<div key={`x:${row}, y:${column}`} id={`x:${row}, y:${column}`} style={{width:'20px',height:'20px',border:'1px solid #333'}}><img src={weapon} alt="weapon" /></div>);
+        grid[row].push(<div key={`x:${row}, y:${column}`} id={`x:${row}, y:${column}`} style={{width:'25px',height:'25px',border:'1px solid #333'}}><img src={weapon} alt="weapon" /></div>);
         numOfWeapons = numOfWeapons + 1;
 
       } else {
         // set empty board path
-        grid[row].push(<div key={`x:${row}, y:${column}`} id={`x:${row}, y:${column}`} style={{width:'20px',height:'20px',border:'1px solid #333'}}></div>);
+        grid[row].push(<div key={`x:${row}, y:${column}`} id={`x:${row}, y:${column}`} style={{width:'25px',height:'25px',border:'1px solid #333'}}></div>);
       }
     }
   }
 
   return (
-    <div style={{display:'grid', gridTemplateColumns:`repeat(${boardWidth}, 20px)`}}>
+    <div style={{display:'grid', gridTemplateColumns:`repeat(${boardWidth}, 25px)`}}>
       {grid}
     </div>
   );
