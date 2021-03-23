@@ -71,7 +71,6 @@ const Board = (props) => {
   };
 
   const play = (e) => {
-    console.log(weaponsDestroyed);
     if(weaponsDestroyed === boardWidth) {
       showPrincessPosition();
       alert(`Congratulations! You defeated ${weaponsDestroyed} warriors to save the princess`); 
@@ -98,7 +97,7 @@ const Board = (props) => {
 
   useEffect(() => {
     document.onkeydown = (e => play(e));
-    // play(currentPosition);
+    document.getElementById('custId').focus();
   }, []);
 
   const boardSize = boardWidth * 2;
@@ -128,9 +127,12 @@ const Board = (props) => {
   }
 
   return (
-    <div style={{display:'grid', gridTemplateColumns:`repeat(${boardWidth}, 25px)`}}>
-      {grid}
-    </div>
+    <>
+      <input type="hidden" id="custId" name="custId" value="3487" />
+      <div style={{display:'grid', gridTemplateColumns:`repeat(${boardWidth}, 25px)`}}>
+        {grid}
+      </div>
+    </>
   );
 }
 
