@@ -128,7 +128,7 @@ const Board = (props) => {
 
   return (
     <>
-      <input type="hidden" id="custId" name="custId" value="3487" />
+      <input type="text" id="custId" name="custId" value="3487" style={{visibility:'hidden'}} />
       <div style={{display:'grid', gridTemplateColumns:`repeat(${boardWidth}, 25px)`}}>
         {grid}
       </div>
