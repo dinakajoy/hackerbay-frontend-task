@@ -16,6 +16,14 @@ const GetBoardWidth = () => {
       setIsBoardShown(true);
     }
   }
+
+  const handleKeyPress = (event) => {
+    if (event.key === '.' || event.key === '+' || event.key === '-') {
+      event.preventDefault();
+    } else {
+      return;
+    }
+  }
   
   return (
     <>
@@ -39,7 +47,17 @@ const GetBoardWidth = () => {
               <form>
                 <div className="form-group">
                   <label htmlFor="sizeOfBoard">Please Enter Board Size!</label>
-                  <input type="number" className="form-control" id="sizeOfBoard" aria-describedby="sizeOfBoard" value={boardSize} min="10" max="30" onChange={e => setBoardSize(e.target.value)} />
+                  <input 
+                    type="number" 
+                    className="form-control" 
+                    id="sizeOfBoard" 
+                    aria-describedby="sizeOfBoard" 
+                    value={boardSize} 
+                    min="10" 
+                    max="30"
+                    step="1"
+                    onKeyPress={(e) => handleKeyPress(e)}
+                    onChange={e => setBoardSize(e.target.value)} />
                 </div>
               </form>
             </div>
