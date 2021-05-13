@@ -1,4 +1,4 @@
-# save-the-princess
+# Save The Princess
 
 ## Description
 This is a simple game built with React that allows users to enter the size of the board and then auto generate a grid with the player and obstacles to defeat in order to win. The game is named `Save The Princess`
